@@ -14,15 +14,14 @@ The options for secular equations include
 **Additoinal forth body**
 
 **single-averaging corrections**
-(e.g. Luo et al. (2016) and Grishin et al. (2018))
+
+Based on 'Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>'_ and 'Grishin et al. (2018) <http://adsabs.harvard.edu/abs/2018MNRAS.481.4907G>'_.
 
 The options for additional forces include
 -------------------------------------------
 
 **Conservative short-range forces**
-(GR, tides), based on Liu, Munoz and Lai (2015) 
-External hyperlinks, like `Python 
-<http://www.python.org/>`_.
+(GR, tides), based on 'Liu et al. (2015) <http://adsabs.harvard.edu/abs/2015MNRAS.447..747L>'_.
 
 **Tidal friction**
 Equilibrium tides from Hut (1981) (e.g. Fabrycky and Tremane (2007) for more modern equations). In addition, a simplified version of dynamical tides is possible (e.g. Moe and Kratter, 2018), with some modifications.
