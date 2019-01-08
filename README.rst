@@ -7,7 +7,7 @@ SecuLab is a Python package for the integration of the secular equations of moti
 Written by Evgeni Grishin for multi-purpose code ffor study of various dynamical configurations focusing of hierarchical triples.
 
 The options for secular equations include
-==================================================
+---------------------------------------
 
 **Secular evolution to octupole order** 
 
@@ -17,10 +17,10 @@ The options for secular equations include
 (e.g. Luo et al. (2016) and Grishin et al. (2018))
 
 The options for additional forces include
-==================================================
+-------------------------------------------
 
 **Conservative short-range forces**
-(GR, tides), absed on Liu, Munoz and Lai (2015)
+(GR, tides), based on Liu, Munoz and Lai (2015) .. _Wikipedia: https://www.wikipedia.org/
 
 **Tidal friction**
 Equilibrium tides from Hut (1981) (e.g. Fabrycky and Tremane (2007) for more modern equations). In addition, a simplified version of dynamical tides is possible (e.g. Moe and Kratter, 2018), with some modifications.
