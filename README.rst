@@ -20,7 +20,7 @@ The options for additional forces include
 -------------------------------------------
 
 **Conservative short-range forces**
-(GR, tides), based on Liu, Munoz and Lai (2015)
+(GR, tides), based on Liu, Munoz and Lai (2015) Wikipedia_. 
 .. _Wikipedia: https://www.wikipedia.org/
 
 **Tidal friction**
