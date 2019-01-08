@@ -6,30 +6,29 @@ Welcome to SecuLab!
 SecuLab is a Python package for the integration of the secular equations of motion of three-body hierarchical systems.
 Written by Evgeni Grishin for multi-purpose code ffor study of various dynamical configurations focusing of hierarchical triples.
 
-The secular equations include
+The options for secular equations include
 ==================================================
 
-**Up to octupole order** 
+**Secular evolution to octupole order** 
 
-with option to 
-
-**forth body**
+**Additoinal forth body**
 
 **single-averaging corrections**
 (e.g. Luo et al. (2016) and Grishin et al. (2018))
 
-Additional forces include
+The options for additional forces include
 ==================================================
 
-- **Conservative short-range forces**
+**Conservative short-range forces**
 (GR, tides), absed on Liu, Munoz and Lai (2015)
 
-- **Tidal friction**
+**Tidal friction**
 Equilibrium tides from Hut (1981) (e.g. Fabrycky and Tremane (2007) for more modern equations). In addition, a simplified version of dynamical tides is possible (e.g. Moe and Kratter, 2018), with some modifications.
 
-- **Gravitational wave emission and inspiral**
+**Gravitational wave emission and inspiral**
+Compared to Peters (1964) formulae
 
-- **Simplified Galactic tides**
+**Simplified Galactic tides**
 For wide binaries, based on Heisler and Tremanie (1986)
 
 Installation
