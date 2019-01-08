@@ -6,9 +6,20 @@ Welcome to SecuLab!
 SecuLab is a Python package for the integration of the secular equations of motion of three-body hierarchical systems.
 Written by Evgeni Grishin for multi-purpose code ffor study of various dynamical configurations focusing of hierarchical triples.
 
-The secular equations are up to octupole order, with option to add a forth body and single-averaging corrections (e.g. Luo et al. (2016) and Grishin et al. (2018))
+The secular equations include
+==================================================
 
-Additional forces include:
+**Up to octupole order** 
+
+with option to 
+
+**forth body**
+
+**single-averaging corrections**
+(e.g. Luo et al. (2016) and Grishin et al. (2018))
+
+Additional forces include
+==================================================
 
 - **Conservative short-range forces**
 (GR, tides), absed on Liu, Munoz and Lai (2015)
@@ -28,7 +39,7 @@ You need to have git installed. In addition, you need the NumPy and SciPy Python
 
 .. code::
    
-   git clone https://github.com/djmunoz/seculab.git
+   git clone https://github.com/eugeneg88/seculab.git
 
    cd seculab
    
