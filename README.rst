@@ -14,8 +14,7 @@ The options for secular equations include
 **Additoinal forth body**
 
 **single-averaging corrections**
-Python 
-<http://www.python.org/>`_.
+
 Based on `Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>`_ and `Grishin et al. (2018) <http://adsabs.harvard.edu/abs/2018MNRAS.481.4907G>`_.
 
 The options for additional forces include
