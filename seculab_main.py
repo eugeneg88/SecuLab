@@ -458,7 +458,7 @@ def init_binary(eA_mag, incA0, omegaA0, nodesA0):
     eA_init = [eA_mag*cos(omegaA0)*cos(nodesA0) - eA_mag*sin(omegaA0)*cos(incA0)*sin(nodesA0),eA_mag*cos(omegaA0)*sin(nodesA0) + eA_mag*sin(omegaA0)*cos(incA0)*cos(nodesA0),eA_mag*sin(omegaA0)*sin(incA0)]
     return np.append(jA_init, eA_init)
 
-def run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts):
+def run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, Nout):
     
     y0 = np.append(bin_A_vec, bin_B_vec)    
     
@@ -476,7 +476,7 @@ def run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts):
     t_visc1 = visc_ts[0]
     t_visc2 = visc_ts[1]
 
-    t = np.linspace(0,sec_in_yr*1e6*t_end_myr, 10000)
+    t = np.linspace(0,sec_in_yr*1e6*t_end_myr, Nout)
     #print inner_time/3.15e7/1e9, outer_time/3.15e7/1e9, inner_time/outer_time 
 ## solve equations ##
     sol, infodict = odeint(evolve_binaries_quad, y0, t,  args= (0,0.0,0.1, m1, m2, m3, m4, a1, a2, a3, 0.01, r1, k11, r2, k12, t_visc1, t_visc2), mxstep = 600000, atol = 1e-12, rtol = 0.3e-12, full_output = True)
