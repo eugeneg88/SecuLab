@@ -20,7 +20,8 @@ The options for additional forces include
 -------------------------------------------
 
 **Conservative short-range forces**
-(GR, tides), based on Liu, Munoz and Lai (2015) .. _Wikipedia: https://www.wikipedia.org/
+(GR, tides), based on Liu, Munoz and Lai (2015)
+   .. _Wikipedia: https://www.wikipedia.org/
 
 **Tidal friction**
 Equilibrium tides from Hut (1981) (e.g. Fabrycky and Tremane (2007) for more modern equations). In addition, a simplified version of dynamical tides is possible (e.g. Moe and Kratter, 2018), with some modifications.
