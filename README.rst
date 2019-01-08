@@ -9,10 +9,14 @@ Written by Evgeni Grishin for multi-purpose code ffor study of various dynamical
 The secular equations are up to octupole order, with option to add a forth body and single-averaging corrections (e.g. Luo et al. (2016) and Grishin et al. (2018))
 
 Additional forces include:
-- Conservative short-range forces (GR, tides), absed on Liu, Munoz and Lai (2015)
-- Tidal friction: Equilibrium tides from Hut (1981) (e.g. Fabrycky and Tremane (2007) for more modern equations). In addition, a simplified version of dynamical tides is possible (e.g. Moe and Kratter, 2018), with some modifications.
-- Gravitational wave emission and inspiral
-- Simplified Galactic tides for wide binaries, based on Heisler and Tremanie (1986)
+- **Conservative short-range forces**
+(GR, tides), absed on Liu, Munoz and Lai (2015)
+- **Tidal friction**
+Equilibrium tides from Hut (1981) (e.g. Fabrycky and Tremane (2007) for more modern equations). In addition, a simplified version of dynamical tides is possible (e.g. Moe and Kratter, 2018), with some modifications.
+- **Gravitational wave emission and inspiral**
+
+- **Simplified Galactic tides**
+For wide binaries, based on Heisler and Tremanie (1986)
 
 Installation
 --------
