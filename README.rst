@@ -32,18 +32,41 @@ Compared to Peters (1964) formulae
 **Simplified Galactic tides**
 For wide binaries, based on Heisler and Tremanie (1986)
 
-Installation
+Clone / Download
 --------
 
-You need to have git installed. In addition, you need the NumPy and SciPy Python packages.
+You need to have git installed. In addition, you need the NumPy and SciPy Python packages. 
+Some tests require comparison with direct N-body code. I'm using `REBOUND <https://rebound.readthedocs.io/en/latest/>`, a high order accurate integrator.
 
 .. code::
    
    git clone https://github.com/eugeneg88/seculab.git
-
-   cd seculab
    
-   sudo python setup.py install
+Tests
+===================
 
-That is all!
+This is still under construction!
+To test some of the features, I've created some scripts with test cases.
+
+Quadrupole evolution 
+------------------------
+
+This test should reproduce Figure 4. of `Naoz et al. 2013 <http://adsabs.harvard.edu/abs/2013MNRAS.431.2155N>` (Also Fig 3. in the `recent review: <https://www.annualreviews.org/doi/10.1146/annurev-astro-081915-023315>`.
+
+.. code::
+   
+   import sl_tests as sl
+   rebound_flag = True; t_end_myr = 1
+   slt.test_quadupole_tpq(rebound_flag,t_end_myr)
  
+After about 5 minutes of integration you should get something like this:
+.. class:: no-web
+	   
+   .. image:: test_quadrupole_tpq.png
+      :height: 100px
+      :width: 200 px
+      :scale: 100 %
+You can turn off the n_body comparison by setting
+.. code::
+   rebound_flag = False
+Which will speed up the integration. You can also cintril the end time of he integration by changing t_end_myr.
