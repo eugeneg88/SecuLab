@@ -60,6 +60,7 @@ This test should reproduce Figure 4. of `Naoz et al. 2013 <http://adsabs.harvard
    slt.test_quadupole_tpq(rebound_flag,t_end_myr)
  
 After about 5 minutes of integration you should get something like this:
+
 .. class:: no-web
 	   
    .. image:: test_quadrupole_tpq.png
@@ -67,6 +68,9 @@ After about 5 minutes of integration you should get something like this:
       :width: 200 px
       :scale: 100 %
 You can turn off the n_body comparison by setting
+
 .. code::
+
    rebound_flag = False
+   
 Which will speed up the integration. You can also cintril the end time of he integration by changing t_end_myr.
