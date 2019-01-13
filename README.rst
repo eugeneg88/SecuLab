@@ -36,7 +36,7 @@ Clone / Download
 --------
 
 You need to have git installed. In addition, you need the NumPy and SciPy Python packages. 
-Some tests require comparison with direct N-body code. I'm using `REBOUND <https://rebound.readthedocs.io/en/latest/>`, a high order accurate integrator.
+Some tests require comparison with direct N-body code. I'm using  `REBOUND <https://rebound.readthedocs.io/en/latest/>`_, a high order accurate integrator.
 
 .. code::
    
@@ -51,11 +51,11 @@ To test some of the features, I've created some scripts with test cases.
 Quadrupole evolution 
 ------------------------
 
-This test should reproduce Figure 4. of `Naoz et al. 2013 <http://adsabs.harvard.edu/abs/2013MNRAS.431.2155N>` (Also Fig 3. in the `recent review: <https://www.annualreviews.org/doi/10.1146/annurev-astro-081915-023315>`.
+This test should reproduce Figure 4. of  `Naoz et al. (2013) <http://adsabs.harvard.edu/abs/2013MNRAS.431.2155N>`_ (Also Fig 3. in the `recent review <https://www.annualreviews.org/doi/10.1146/annurev-astro-081915-023315>`_ ).
 
 .. code::
    
-   import sl_tests as sl
+   import sl_tests as slt
    rebound_flag = True; t_end_myr = 1
    slt.test_quadupole_tpq(rebound_flag,t_end_myr)
  
