@@ -38,7 +38,7 @@ Clone / Download
 You need to have git installed. In addition, you need the NumPy and SciPy Python packages. 
 Some tests require comparison with direct N-body code. I'm using  `REBOUND <https://rebound.readthedocs.io/en/latest/>`_, a high order accurate integrator.
 
-.. code::
+.. code:: python
    
    git clone https://github.com/eugeneg88/seculab.git
    
@@ -53,7 +53,7 @@ Quadrupole evolution
 
 This test should reproduce Figure 4. of  `Naoz et al. (2013) <http://adsabs.harvard.edu/abs/2013MNRAS.431.2155N>`_ (Also Fig 3. in the `recent review <https://www.annualreviews.org/doi/10.1146/annurev-astro-081915-023315>`_ ).
 
-.. code::
+.. code:: python
    
    import sl_tests as slt
    rebound_flag = True; t_end_myr = 1
@@ -69,7 +69,7 @@ After about 5 minutes of integration you should get something like this:
       :scale: 100 %
 You can turn off the n_body comparison by setting
 
-.. code::
+.. code:: python
 
    rebound_flag = False
    
