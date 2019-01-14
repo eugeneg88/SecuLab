@@ -73,4 +73,30 @@ You can turn off the n_body comparison by setting
 
    rebound_flag = False
    
-Which will speed up the integration. You can also cintril the end time of he integration by changing t_end_myr.
+Which will speed up the integration. You can also contril the end time of he integration by changing t_end_myr.
+
+Circumbinary planets 
+------------------------
+
+This script reproduces Fig. 3 of `Martin and Triaud (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.455L..46M>`_:
+
+.. code:: python
+   
+   import sl_tests as slt
+   rebound_flag = True; t_end_myr = 1; single_averaging_flag = False;
+   inclinations = [157, 158, 159]
+   slt.test_quadupole_tpq(rebound_flag,t_end_myr, single_averaging_flag, incs)
+   
+It might take about an hour to integrate with REBOUND the ~ 10^7 orbits up to 1 Myr, but eventually you will see something like this
+
+[add figure]
+
+It better a little better if we turn on the effective single averaging correction (more on that later!)
+
+[add figure]
+
+.. code:: python
+	single_averaging_flag = True;
+this will reproduce a similar plot, only the first spikes are captured slightly better. 
+
+
