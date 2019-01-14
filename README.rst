@@ -117,5 +117,3 @@ It is possible to add an effective force / potential that mimics the secular evo
 
 The following test reproduces fig. 1 of `Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>`_: 
 
-
-
