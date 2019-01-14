@@ -84,19 +84,39 @@ This script reproduces Fig. 3 of `Martin and Triaud (2016) <http://adsabs.harvar
    
    import sl_tests as slt
    rebound_flag = True; t_end_myr = 1; single_averaging_flag = False;
-   inclinations = [157, 158, 159]
-   slt.test_quadupole_tpq(rebound_flag,t_end_myr, single_averaging_flag, incs)
+   incs = [157, 158, 159]
+   slt.circumbinary_planets(rebound_flag,t_end_myr, single_averaging_flag, incs)
    
 It might take about an hour to integrate with REBOUND the ~ 10^7 orbits up to 1 Myr, but eventually you will see something like this
 
-[add figure]
+.. class:: no-web
+	   
+   .. image:: circumbinary_planets_sa_off.png
+      :height: 100px
+      :width: 200 px
+      :scale: 100 %
 
-It better a little better if we turn on the effective single averaging correction (more on that later!)
-
-[add figure]
+The dashed lines are the exact N-body while the solid lines are SecuLab ibtegration. The results will fit a little better little better if we turn on the effective single averaging correction (more on that later!)
 
 .. code:: python
 	single_averaging_flag = True;
-this will reproduce a similar plot, only the first spikes are captured slightly better. 
+
+This will reproduce a similar plot, only the first spikes are captured slightly better. 
+
+.. class:: no-web
+	   
+   .. image:: circumbinary_planets_sa_on.png
+      :height: 100px
+      :width: 200 px
+      :scale: 100 %
+      
+ 
+ Effective single averaging 
+-------------------------------
+
+It is possible to add an effective force / potential that mimics the secular evolution with corrections from short-term variations of the orbital elements. The corrections is based on `Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>`_ and `Grishin et al. (2018) <http://adsabs.harvard.edu/abs/2018MNRAS.481.4907G>`_.
+
+The following test reproduces fig. 1 of `Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>`_: 
+
 
 
