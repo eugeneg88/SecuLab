@@ -110,8 +110,7 @@ This will reproduce a similar plot, only the first spikes are captured slightly 
       :width: 200 px
       :scale: 100 %
       
- 
- Effective single averaging 
+Effective single averaging 
 -------------------------------
 
 It is possible to add an effective force / potential that mimics the secular evolution with corrections from short-term variations of the orbital elements. The corrections is based on `Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>`_ and `Grishin et al. (2018) <http://adsabs.harvard.edu/abs/2018MNRAS.481.4907G>`_.
