@@ -130,7 +130,7 @@ This should reproduce the following plot:
 
 .. class:: no-web
 	   
-   .. image:: sinle_averaging.png
+   .. image:: single_averaging.png
       :height: 100px
       :width: 200 px
       :scale: 100 %
