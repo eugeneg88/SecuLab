@@ -59,7 +59,9 @@ conservative_extra_forces_flag = True
 GW_flag = False
 single_averaging_flag = True
 diss_tides_flag = True
-
+a_stop = 1e-6 #au
+peri_stop = 1e-6 # au
+peri_stop = 0.00001 # au
 " critical break up frequency"
 def critical_spin(m,r):
     return np.sqrt(G * m / r**3)
@@ -157,7 +159,9 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
       
      You should be extremely carefult with the normalization, it cost me a lot of trouble!
      """
-
+     djA_tot_dt = [0,0,0]; deA_tot_dt = [0,0,0]
+     djB_tot_dt = [0,0,0]; deB_tot_dt = [0,0,0]
+     
      e_A_vec = [e_Ax, e_Ay, e_Az]; e1 = LA.norm(e_A_vec); 
      j_A_vec = [j_Ax,j_Ay,j_Az]; j1 = (1-e1**2)**0.5;
      j_A_hat = [x/LA.norm(j_A_vec) for x in j_A_vec]
@@ -167,9 +171,11 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
      e_B_hat = [x/LA.norm(e_B_vec) for x in e_B_vec]
 
      " some auxillary quantities "      
-     j1sq  = 1 - e1*e1
-     j2sq = 1 - e2*e2
- 
+     e1sq = e1*e1
+     e2sq = e2*e2
+     j1sq  = 1 - e1sq
+     j2sq = 1 - e2sq
+
 
      " Semi-Major axes:  " 
      a1_actual = a1 * LA.norm(j_A_vec)**2/j1sq; 
@@ -177,9 +183,10 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
     
      """ stopping conditions """
     
-     schwartzshild_radius = 2 * G * (m1+m2) / c**2
-     roche_limit = 2.7 * (r1 + r2) # 2.7 from Guillochon+2013 for planets '
-     stopping_radius = max(3 * schwartzshild_radius, roche_limit)
+#     schwartzshild_radius = 2 * G * (m1+m2) / c**2
+#     roche_limit = 2.7 * (r1 + r2) # 2.7 from Guillochon+2013 for planets '
+#     stopping_radius =  max(3 * schwartzshild_radius, roche_limit)
+     stopping_radius = peri_stop    
 #     if t > 3000/3.15e7:
      #    print t / 3.15e7, 30.0 - a1_actual/au
 
@@ -189,8 +196,8 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
      """         
      if a1_actual * (1 - e1) <= stopping_radius:
          print 'min pericenter reached! r_p/au, t/yr = ',a1_actual*(1-e1)/au, t/sec_in_yr          
-         return
-     if a1_actual  <= 0.00 * au:
+         return 
+     if a1_actual  <= a_stop * au:
          print 'min sma reached! r_p/au, t/yr = ',a1_actual/au, t/sec_in_yr          
          return
      
@@ -229,13 +236,13 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
      djA_dt1 = 3./4.*j1*dot_jAjB * cr_jAjB
      djA_dt2 = -15./4.* dot_eAjB * cr_eAjB/j1
       
-     djA_tot_dt = ang_momHA * (djA_dt1 + djA_dt2)/inner_time 
+     djA_tot_dt =+ ang_momHA * (djA_dt1 + djA_dt2)/inner_time 
  
     # deA_dt
      deA_dt1 = 3./4.*(dot_jAjB * cr_eAjB - 5 * dot_eAjB * cr_jAjB )
      deA_dt2 = 3./2.* cr_jAeA
       
-     deA_tot_dt = (j1*deA_dt1 + j1*deA_dt2)/inner_time 
+     deA_tot_dt += (j1*deA_dt1 + j1*deA_dt2)/inner_time 
      
      #### add octupole evolution
      if octupole_flag:
@@ -401,7 +408,7 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
             deA_tot_dt += 0.046875 * eps_sa * e2**2 * (Ae1 *j1 * cr_jAeB + Ae2 *j1 * cr_jAvB + Ae3_ecc *j1 * cr_jAjB + Ae4 * cr_eAeB + Ae5 * cr_eAvB + Ae6_ecc * cr_eAjB) / inner_time
          
 # evolve binary B with time scale t_sec_out
-     djB_tot_dt = 0; deB_tot_dt = 0
+
      if galactic_tide_flag or quad_flag:   
          djB_dt1 = 3./4.*j2*np.dot(j_B_hat,j_C_hat)*np.cross(j_B_hat,j_C_hat)
          djB_dt2 = -15./4.*np.dot(e_B_vec,j_C_hat)*np.cross(e_B_vec,j_C_hat)/j2
@@ -411,7 +418,7 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
          deB_dt1 = 3./4.*(np.dot(j_B_hat,j_C_hat)*np.cross(e_B_vec,j_C_hat) - 5.*np.dot(e_B_vec,j_C_hat)*np.cross(j_B_hat,j_C_hat))
          deB_dt2 = 3./4.*(1.+ gam)*np.cross(j_B_hat,e_B_vec)
          
-         deB_tot_dt = (j2*deB_dt1 + j2*deB_dt2)/ outer_time
+         deB_tot_dt+= (j2*deB_dt1 + j2*deB_dt2)/ outer_time
 
 ## add back-reaction (TBD)
      if backreaction_flag:
@@ -442,8 +449,8 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
      
 #### append evolution to solution vector
 	
-     dydtA = np.append(djA_tot_dt, deA_tot_dt) 
-     dydtB = np.append(djB_tot_dt, deB_tot_dt) 
+     dydtA = np.append(djA_tot_dt, deA_tot_dt);
+     dydtB = np.append(djB_tot_dt, deB_tot_dt);
      dydt = np.append(dydtA, dydtB) 
 	#print t, j_B_vec, LA.norm(e_B_vec)**2 + LA.norm(j_B_vec)**2 , np.dot(e_B_vec, j_B_vec)
      return dydt
@@ -454,8 +461,8 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
      ###### initial vectors ####
 def init_binary(eA_mag, incA0, omegaA0, nodesA0):
     jA_mag = (1.-eA_mag**2)**0.5
-    jA_init = [jA_mag*sin(incA0)*sin(nodesA0), -jA_mag*sin(incA0)*cos(nodesA0), jA_mag*cos(incA0)]
-    eA_init = [eA_mag*cos(omegaA0)*cos(nodesA0) - eA_mag*sin(omegaA0)*cos(incA0)*sin(nodesA0),eA_mag*cos(omegaA0)*sin(nodesA0) + eA_mag*sin(omegaA0)*cos(incA0)*cos(nodesA0),eA_mag*sin(omegaA0)*sin(incA0)]
+    jA_init = [jA_mag*np.sin(incA0)*np.sin(nodesA0), -jA_mag*np.sin(incA0)*np.cos(nodesA0), jA_mag*np.cos(incA0)]
+    eA_init = [eA_mag*np.cos(omegaA0)*np.cos(nodesA0) - eA_mag*np.sin(omegaA0)*np.cos(incA0)*np.sin(nodesA0),eA_mag*np.cos(omegaA0)*np.sin(nodesA0) + eA_mag*np.sin(omegaA0)*np.cos(incA0)*np.cos(nodesA0),eA_mag*np.sin(omegaA0)*np.sin(incA0)]
     return np.append(jA_init, eA_init)
 
 def run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, Nout):
