@@ -4,7 +4,7 @@ SecuLab - Solves secular equations of motion with various additional effects
 Welcome to SecuLab!
 
 SecuLab is a Python package for the integration of the secular equations of motion of three-body hierarchical systems.
-Written by Evgeni Grishin for multi-purpose code ffor study of various dynamical configurations focusing of hierarchical triples.
+Written by Evgeni Grishin for multi-purpose code for studying various dynamical configurations focusing of hierarchical triples.
 
 The options for secular equations include
 ---------------------------------------
@@ -35,8 +35,10 @@ For wide binaries, based on Heisler and Tremanie (1986)
 Clone / Download
 --------
 
-You need to have git installed. In addition, you need the NumPy and SciPy Python packages. 
+You need to have git installed. In addition, you need the NumPy and SciPy Python packages, and Matplotlib for plotting. 
 Some tests require comparison with direct N-body code. I'm using  `REBOUND <https://rebound.readthedocs.io/en/latest/>`_, a high order accurate integrator.
+
+This command will create a folder of SecuLab. That's pretty much it!
 
 .. code:: python
    
@@ -67,13 +69,13 @@ After about 5 minutes of integration you should get something like this:
       :height: 100px
       :width: 200 px
       :scale: 100 %
-You can turn off the n_body comparison by setting
+You can turn off the N_body comparison by setting
 
 .. code:: python
 
    rebound_flag = False
    
-Which will speed up the integration. You can also contril the end time of he integration by changing t_end_myr.
+Which will speed up the integration. You can also control the end time of the integration by changing t_end_myr.
 
 Circumbinary planets 
 ------------------------
@@ -85,7 +87,7 @@ This script reproduces Fig. 3 of `Martin and Triaud (2016) <http://adsabs.harvar
    import sl_tests as slt
    rebound_flag = True; t_end_myr = 1; single_averaging_flag = False;
    incs = [157, 158, 159]
-   slt.circumbinary_planets(rebound_flag,t_end_myr, single_averaging_flag, incs)
+   slt.test_circumbinary_planets(rebound_flag,t_end_myr, single_averaging_flag, incs)
    
 It might take about an hour to integrate with REBOUND the ~ 10^7 orbits up to 1 Myr, but eventually you will see something like this
 
@@ -96,7 +98,7 @@ It might take about an hour to integrate with REBOUND the ~ 10^7 orbits up to 1 
       :width: 200 px
       :scale: 100 %
 
-The dashed lines are the exact N-body while the solid lines are SecuLab ibtegration. The results will fit a little better little better if we turn on the effective single averaging correction (more on that later!)
+The dashed lines are the exact N-body while the solid lines are SecuLab integration. The results will fit a little better if we turn on the effective single averaging correction (more on that later!)
 
 .. code:: python
 	single_averaging_flag = True;
@@ -115,5 +117,22 @@ Effective single averaging
 
 It is possible to add an effective force / potential that mimics the secular evolution with corrections from short-term variations of the orbital elements. The corrections is based on `Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>`_ and `Grishin et al. (2018) <http://adsabs.harvard.edu/abs/2018MNRAS.481.4907G>`_.
 
-The following test reproduces fig. 1 of `Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>`_: 
+The following test reproduces Fig. 5 of `Luo et al. (2016) <http://adsabs.harvard.edu/abs/2016MNRAS.458.3060L>`_: 
 
+.. code:: python
+   
+   import sl_tests as slt
+   rebound_flag = True
+   t_end_myr = 0.5  
+   slt.test_single_averaging(rebound_flag, t_end_myr)
+   
+This should reproduce the following plot: 
+
+.. class:: no-web
+	   
+   .. image:: sinle_averaging.png
+      :height: 100px
+      :width: 200 px
+      :scale: 100 %
+      
+ Turning on single-averaging corrections could really matter!
