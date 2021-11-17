@@ -62,7 +62,7 @@ conservative_extra_forces_flag = True # GR, tidal and rotational bulges and extr
 GW_flag = True # gravitational wave dissipation
 single_averaging_flag = True # effective single averaging corrections
 diss_tides_flag = True #dissipative tides
-dynamical_variables_flag = True # for stellar evolution, adiabatic mass loss etc
+dynamical_variables_flag = False # for stellar evolution, adiabatic mass loss etc
 #stopping conditions
 stopping_roche_limit_flag = False
 stopping_MA_stability_flag = True
@@ -232,48 +232,69 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
              r1_init = r1; r2_init = r2;
              k1_init = k1; k2_init = k2;
              a1_init = a1; a2_init = a2; #a2_actual_init = a2_actual;
-
              t_visc1_init = t_visc1; t_visc2_init = t_visc2 
     #final WD masses from eq 2 and 3 of Catalan et al. (2008)
              m_wd_1 = wd_mass(m1_init)
              m_wd_2 = wd_mass(m2_init) 
+     #        print ('ms, ', a1/au, m1_init/msun)    
 
-         if t_wd1> t> t_ms1: #1st is RG, 2nd is MS
+         if t_wd1>= t>= t_ms1: #1st is RG, 2nd is MS
              m1_t = m1_init * (m1_init/m_wd_1)**((- (t-t_ms1) /  (t_wd1 - t_ms1)))
              r1 = 10 * r1_init
              k1 = 0.1
              t_visc1 = 5 * sec_in_yr * 0.014/k1
              a1 = a1_init * ((m1_t+m2_init)/(m1_init+m2_init))**-1
              a2 = a2_init * ((m1_t+m2_init + m3)/(m1_init+m2_init + m3))**-1
+  #           print ('rg1, ',t/t_ms1, a1/au, m1_init/msun)    
+
+         if t_ms1 <= t <= t_wd1 and t_ms2 <= t <= t_wd2: #rg+rg
+             m1_t = m1_init * (m1_init/m_wd_1)**((- (t-t_ms1) /  (t_wd1 - t_ms1)))
+             m2_t = m2_init * (m2_init/m_wd_2)**((- (t-t_ms2) /  (t_wd2 - t_ms2)))
+             a1 =  a1_init * ((m1+m2_init)/(m1_init+m2_init))**-1
+             a2 = a2_init * ((m1+m2_init + m3)/(m1_init+m2_init + m3))**-1
+             r1 = 10 * r1_init
+             k1 = 0.1
+             t_visc1 =  5 * sec_in_yr * 0.014/k1
+             r2 = 10 * r2_init
+             k2 = 0.1
+             t_visc2 =  5 * sec_in_yr * 0.014/k2
  
-         if t_wd1 < t < t_ms2: #white dwarf 1, 2 still in ms
+         if t_wd1 <= t <= t_ms2: #white dwarf 1, 2 still in ms
              m1 = m_wd_1
              a1 =  a1_init * ((m1+m2_init)/(m1_init+m2_init))**-1
              a2 = a2_init * ((m1+m2_init + m3)/(m1_init+m2_init + m3))**-1
              r1 = 0.01 * r1_init
              k1 = 0.1
              t_visc1 = 1e4 * sec_in_yr
+   #          print ('wd1, ',t/t_ms1, a1/au, m1_init/msun)    
 
-         if t_wd2 > t > t_ms2: #1st is WD, 2nd is RG
+         if t_wd2 >= t >= t_ms2: #1st is WD, 2nd is RG
              m1 = m_wd_1
              m2_t = m2_init * (m2_init/m_wd_2)**((- (t-t_ms2) /  (t_wd2 - t_ms2)))
+             r1 = 0.01 * r1_init
+             k1 = 0.1
+             t_visc1 = 1e4 * sec_in_yr
              r2 = 10 * r2_init
              k2 = 0.1
              t_visc2 = sec_in_yr * 0.014/k2
              a1 = a1_init * ((m2_t+m_wd_1)/(m1_init+m2_init))**-1 
              a2 = a2_init * ((m2_t+m_wd_1 + m3)/(m1_init+m2_init +m3))**-1
+    #         print ('rg2, ',t/t_ms1, a1/au, m1_init/msun)    
           
-         if t_wd2 < t : #both WDs
+         if t_wd2 <= t : #both WDs
              m1 = m_wd_1
              m2 = m_wd_2
              a1 = a1_init * ((m1+m2)/(m1_init+m2_init))**-1
              a2 = a2_init * ((m1+m2+m3)/(m1_init+m2_init+m3))**-1
-
+             r1 = 0.01 * r1_init
+             k1 = 0.1
+             t_visc1 = 1e4 * sec_in_yr
              r2 = 0.01 * r2_init
              k2 = 0.1
              t_visc2 = 1e4 * sec_in_yr
+ #            print ('wd2, ',t/t_ms1, a1/au, m1_init/msun)    
             
-         peri_stop = 5*max(r1,r2) #update stopping condition for the pericentre
+         peri_stop = 3*(r1+r2) #update stopping condition for the pericentre
 
      " Semi-Major axes:  " 
      a1_actual = a1 * LA.norm(j_A_vec)**2/j1sq; 
@@ -315,40 +336,39 @@ def evolve_binaries_quad (y, t, j_cx,j_cy,j_cz, m1, m2, m3, m4, a1, a2, a3,e3,  
              state = 4
              if time_series <= 0:
                  time_series = t/sec_in_yr
-             a1_ret = a1_actual/au 
-             a2_ret = a2_actual/au
-             e1_ret = e1
-             e2_ret = e2
-             iAB_ret = np.arccos(np.dot(j_A_hat, j_B_hat))
-             iAC_ret = np.arccos(np.dot(j_A_hat, j_C_hat))
-             iBC_ret = np.arccos(np.dot(j_B_hat, j_C_hat))
+                 a1_ret = a1_actual/au 
+                 a2_ret = a2_actual/au
+                 e1_ret = e1
+                 e2_ret = e2
+                 iAB_ret = np.arccos(np.dot(j_A_hat, j_B_hat))
+                 iAC_ret = np.arccos(np.dot(j_A_hat, j_C_hat))
+                 iBC_ret = np.arccos(np.dot(j_B_hat, j_C_hat))
              return [0,0,0,0,0,0,0,0,0,0,0,0]
-                
      if stopping_user_defined_flag:         
          if a1_actual * (1 - e1) <= peri_stop:
              state = 5
              if time_series <= 0:
                  time_series = t/sec_in_yr
-             a1_ret = a1_actual/au 
-             a2_ret = a2_actual/au
-             e1_ret = e1
-             e2_ret = e2
-             iAB_ret = np.arccos(np.dot(j_A_hat, j_B_hat))
-             iAC_ret = np.arccos(np.dot(j_A_hat, j_C_hat))
-             iBC_ret = np.arccos(np.dot(j_B_hat, j_C_hat))
+                 a1_ret = a1_actual/au 
+                 a2_ret = a2_actual/au
+                 e1_ret = e1
+                 e2_ret = e2
+                 iAB_ret = np.arccos(np.dot(j_A_hat, j_B_hat))
+                 iAC_ret = np.arccos(np.dot(j_A_hat, j_C_hat))
+                 iBC_ret = np.arccos(np.dot(j_B_hat, j_C_hat))
              return [0,0,0,0,0,0,0,0,0,0,0,0]
          
          if a1_actual  <= a_stop:
              state = 6
              if time_series <= 0:
                  time_series = t/sec_in_yr
-             a1_ret = a1_actual/au 
-             a2_ret = a2_actual/au
-             e1_ret = e1
-             e2_ret = e2
-             iAB_ret = np.arccos(np.dot(j_A_hat, j_B_hat))
-             iAC_ret = np.arccos(np.dot(j_A_hat, j_C_hat))
-             iBC_ret = np.arccos(np.dot(j_B_hat, j_C_hat))
+                 a1_ret = a1_actual/au 
+                 a2_ret = a2_actual/au
+                 e1_ret = e1
+                 e2_ret = e2
+                 iAB_ret = np.arccos(np.dot(j_A_hat, j_B_hat))
+                 iAC_ret = np.arccos(np.dot(j_A_hat, j_C_hat))
+                 iBC_ret = np.arccos(np.dot(j_B_hat, j_C_hat))
              return [0,0,0,0,0,0,0,0,0,0,0,0]
  #            print('Minimal semi major axis reached! a/au, t/yr = ',a1_actual/au, t/sec_in_yr)          
 
@@ -701,7 +721,7 @@ def get_element_solution(sol, t, smas, masses):
             m2t = evolving_mass(masses[1], t[i])    
             first_orbit_corr = (masses[0] + masses[1])/(m1t + m2t)            
             second_orbit_corr = (masses[0] + masses[1] + masses[2])/(m1t + m2t + masses[2])            
-
+#            print ('corrections:', first_orbit_corr, second_orbit_corr)
         t_sim.append(t[i])
         eccA.append(oeA[0]); eccB.append(oeB[0]);
         incA.append(oeA[1]); incB.append(oeB[1]); 
