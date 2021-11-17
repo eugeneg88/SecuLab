@@ -2,7 +2,9 @@ import seculab_main as sl
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-import rebound
+import pkgutil
+if not pkgutil.find_loader('rebound') == None: #checks is rebound is installed
+    import rebound
 
 #logical flags, defaults
 def test_isolated_gw_emission(e_iso_0, a1, mass1, mass2, t_end_myr, peters_flag):
@@ -24,13 +26,13 @@ def test_isolated_gw_emission(e_iso_0, a1, mass1, mass2, t_end_myr, peters_flag)
     ks = [0.014, 2*0.25]
     visc_ts = [2e4/365.25*sl.sec_in_yr, 2e4/365.5*sl.sec_in_yr]
 
-    sl.a_stop=0
+    sl.a_stop=1
     sol, t = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
     t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas)
     
 #%%
 ## plotting ##
-    plt.rc('text', usetex=True)
+    plt.rc('text', usetex=False)
     plt.rc('font', family='serif')
     plt.figure(figsize=(12,6))
     matplotlib.rcParams.update({'font.size': 24})
@@ -145,7 +147,7 @@ def test_quadupole_tpq(rebound_flag, t_end_myr):
             inctottpq[i] =  np.arccos(np.cos(inc1tpq[i])*np.cos( inc2tpq[i]) + np.sin(inc1tpq[i])*np.sin( inc2tpq[i])*np.cos(sim2.particles[1].Omega - sim2.particles[2].Omega))    
 #%%
 ## plotting ##
-    plt.rc('text', usetex=True)
+    plt.rc('text', usetex=False)
     plt.rc('font', family='serif')
     plt.figure(figsize=(14,10))
     matplotlib.rcParams.update({'font.size': 24})
@@ -280,7 +282,7 @@ def test_circumbinary_planets(rebound_flag, t_end_myr, single_averaging_flag, in
 #%%
 ## plotting ##
 
-    plt.rc('text', usetex=True)
+    plt.rc('text', usetex=False)
     plt.rc('font', family='serif')
     plt.figure(figsize=(14,10))
     matplotlib.rcParams.update({'font.size': 24})
@@ -334,6 +336,7 @@ def test_single_averaging(rebound_flag, t_end_myr):
     sl.GW_flag = False
     sl.single_averaging_flag = False
     sl.diss_tides_flag = False
+    sl.stopping_user_defined_flag = False
     
     " initialize vectors with (e, inc, omega, Omega) - inc in RAD! "
     bin_A_vec = sl.init_binary(0.2, 110*np.pi/180., 0*np.pi/180., 0)
@@ -345,12 +348,12 @@ def test_single_averaging(rebound_flag, t_end_myr):
     visc_ts = [1*sl.sec_in_yr, 1*sl.sec_in_yr]
 
     sol, t = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
-    t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas)
+    t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas, masses)
 
     sl.single_averaging_flag = True
 
     sol2, t2 = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
-    t_sim2, eccA2, incA2, nodesA2, omegaA2, eccB2, incB2, nodesB2, omegaB2, incAB2, smaA2, smaB2, pericenterA2 = sl.get_element_solution(sol2, t2, smas)
+    t_sim2, eccA2, incA2, nodesA2, omegaA2, eccB2, incB2, nodesB2, omegaB2, incAB2, smaA2, smaB2, pericenterA2 = sl.get_element_solution(sol2, t2, smas, masses)
 #compare to N-body
 
     if rebound_flag:
@@ -377,7 +380,7 @@ def test_single_averaging(rebound_flag, t_end_myr):
             omega1[i] = sim.particles[1].omega
             inctot[i] =  np.arccos(np.cos(inc1[i])*np.cos( inc2[i]) + np.sin(inc1[i])*np.sin( inc2[i])*np.cos(sim.particles[1].Omega - sim.particles[2].Omega))      
 ## plotting ##
-    plt.rc('text', usetex=True)
+    plt.rc('text', usetex=False)
     plt.rc('font', family='serif')
     plt.figure(figsize=(15,10))
     matplotlib.rcParams.update({'font.size': 24})
