@@ -16,6 +16,8 @@ def test_isolated_gw_emission(e_iso_0, a1, mass1, mass2, t_end_myr, peters_flag)
     sl.GW_flag = True
     sl.single_averaging_flag = False
     sl.diss_tides_flag = False
+    sl.stopping_user_defined_flag = False
+
 
     " initialize vectors with (e, inc, omega, Omega) - inc in RAD! "
     bin_A_vec = sl.init_binary(e_iso_0, 1e-8*np.pi/180., 0*np.pi/180., 0)
@@ -28,7 +30,7 @@ def test_isolated_gw_emission(e_iso_0, a1, mass1, mass2, t_end_myr, peters_flag)
 
     sl.a_stop=1
     sol, t = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
-    t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas)
+    t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas, masses)
     
 #%%
 ## plotting ##
@@ -81,6 +83,7 @@ def test_quadupole_tpq(rebound_flag, t_end_myr):
     sl.GW_flag = False
     sl.single_averaging_flag = False
     sl.diss_tides_flag = False
+    sl.stopping_user_defined_flag = False
 
     " initialize vectors with (e, inc, omega, Omega) - inc in RAD! "
     bin_A_vec = sl.init_binary(0.5, 70*np.pi/180., 120*np.pi/180., 0)
@@ -92,17 +95,17 @@ def test_quadupole_tpq(rebound_flag, t_end_myr):
     visc_ts = [1*sl.sec_in_yr, 1*sl.sec_in_yr]
 
     sol, t = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
-    t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas)
+    t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas, masses)
 
     sl.backreaction_flag = False
 
     sol2, t2 = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
-    t_sim2, eccA2, incA2, nodesA2, omegaA2, eccB2, incB2, nodesB2, omegaB2, incAB2, smaA2, smaB2, pericenterA2 = sl.get_element_solution(sol2, t2, smas)
+    t_sim2, eccA2, incA2, nodesA2, omegaA2, eccB2, incB2, nodesB2, omegaB2, incAB2, smaA2, smaB2, pericenterA2 = sl.get_element_solution(sol2, t2, smas, masses)
     
     sl.backreaction_flag = True
     masses3 = [1.4*sl.msun, 1e-4*0.3*sl.msun, 0.01*sl.msun, 1e-16*sl.msun]
     sol3, t3 = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses3, smas, rs, ks, visc_ts, 10000)
-    t_sim3, eccA3, incA3, nodesA3, omegaA3, eccB3, incB3, nodesB3, omegaB3, incAB3, smaA3, smaB3, pericenterA3 = sl.get_element_solution(sol3, t3, smas)
+    t_sim3, eccA3, incA3, nodesA3, omegaA3, eccB3, incB3, nodesB3, omegaB3, incAB3, smaA3, smaB3, pericenterA3 = sl.get_element_solution(sol3, t3, smas, masses)
 
 
 #compare to N-body
@@ -196,6 +199,7 @@ def test_circumbinary_planets(rebound_flag, t_end_myr, single_averaging_flag, in
     sl.conservative_extra_forces_flag = False
     sl.GW_flag = False
     sl.diss_tides_flag = False
+    sl.stopping_user_defined_flag = False
 
     " initialize vectors with (e, inc, omega, Omega) - inc in RAD! "
     bin_A_vec = sl.init_binary(0.8e-4, incs[0]*np.pi/180., 0*np.pi/180., 0)
@@ -207,17 +211,17 @@ def test_circumbinary_planets(rebound_flag, t_end_myr, single_averaging_flag, in
     visc_ts = [50*sl.sec_in_yr, 50*sl.sec_in_yr]
 
     sol, t = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
-    t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas)
+    t_sim, eccA, incA, nodesA, omegaA, eccB, incB, nodesB, omegaB, incAB, smaA, smaB, pericenterA = sl.get_element_solution(sol, t, smas, masses)
 
     bin_A_vec = sl.init_binary(0.8e-4, incs[1]*np.pi/180., 0*np.pi/180., 0)
 
     sol2, t2 = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
-    t_sim2, eccA2, incA2, nodesA2, omegaA2, eccB2, incB2, nodesB2, omegaB2, incAB2, smaA2, smaB2, pericenterA2 = sl.get_element_solution(sol2, t2, smas)
+    t_sim2, eccA2, incA2, nodesA2, omegaA2, eccB2, incB2, nodesB2, omegaB2, incAB2, smaA2, smaB2, pericenterA2 = sl.get_element_solution(sol, t, smas, masses)
     
     bin_A_vec = sl.init_binary(0.8e-4, incs[2]*np.pi/180., 0*np.pi/180., 0)
 
     sol3, t3 = sl.run_sim(t_end_myr, bin_A_vec, bin_B_vec, masses, smas, rs, ks, visc_ts, 10000)
-    t_sim3, eccA3, incA3, nodesA3, omegaA3, eccB3, incB3, nodesB3, omegaB3, incAB3, smaA3, smaB3, pericenterA3 = sl.get_element_solution(sol3, t3, smas)
+    t_sim3, eccA3, incA3, nodesA3, omegaA3, eccB3, incB3, nodesB3, omegaB3, incAB3, smaA3, smaB3, pericenterA3 = sl.get_element_solution(sol, t, smas, masses)
 
 
 #compare to N-body
